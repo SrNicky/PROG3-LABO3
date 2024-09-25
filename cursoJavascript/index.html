@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style>
+      /* Estilos para el campo de texto deshabilitado */
+      input:disabled {
+          background-color: #e0e0e0;
+          cursor: not-allowed;
+      }
+  </style>
+  <style>
+    /* Estilos básicos */
+    #correoGuardado {
+        margin-top: 10px;
+        font-weight: bold;
+        color: green;
+    }
+    #eliminarBtn {
+        margin-top: 10px;
+        display: none; /* Ocultamos el botón de eliminar por defecto */
+    }
+</style>
+  </head>
+  <body>
+    
+    <div id="app"></div>
+    <script type="module" src="/cursoJavascript/main.js"></script>
+
+    <p>Este es el primer párrafo.</p>
+    <p>Este es el segundo párrafo.</p>
+    <p>Este es el tercer párrafo.</p>
+
+    <!-- Botón para cambiar el color -->
+    <button onclick="cambiarColor()">Cambiar color a azul</button>
+
+    <script>
+        // Función que cambia el color de todos los párrafos a azul
+        function cambiarColor() {
+            let parrafos = document.querySelectorAll('p');
+            parrafos.forEach(function(parrafo) {
+                parrafo.style.color = 'blue';
+            });
+        }
+    </script>
+
+    <!-- Formulario con un campo de texto -->
+    <h2>Formulario con ALERTA</h2>
+    <form>
+      <label id="label1" for="campoTexto">Ingresa tu nombre:</label>
+      <input type="text" id="campoTexto" name="campoTexto">
+      <button type="button" onclick="mostrarAlerta()">Mostrar ALERTA</button>
+    </form>
+
+    <script>
+      // Función para mostrar el valor ingresado en el campo de texto
+        
+      function mostrarAlerta() {
+        let valorCampo = document.getElementById('campoTexto').value;
+        alert("Valor ingresado: " + valorCampo);
+      }
+    </script>
+
+    <!-- Lista desordenada con varios elementos -->
+    <h2>Lista con Elementos (pedir correccion no corre en opera)</h2>
+    <ul id="miLista">
+      <li>Elemento 1</li>
+      <li>Elemento 2</li>
+      <li>Elemento 3</li>
+      <li>Elemento 4</li>
+    </ul>
+
+    <script>
+      // Seleccionamos todos los elementos li dentro de la lista ul
+      let elementosLista = document.querySelectorAll('#miLista li');
+
+      // Agregamos un evento click a cada elemento de la lista
+      elementosLista.forEach(function(elemento) {
+      elemento.addEventListener('click', function() {
+        console.log("Texto del elemento: " + elemento.textContent);
+        });
+        });
+    </script>
+    <!-- Campo de texto -->
+    <label for="campoTexto2">Escribe algo:</label>
+    <input type="text" id="campoTexto2" name="campoTexto2">
+
+    <br><br>
+
+    <!-- Botón para deshabilitar el campo de texto -->
+    <button id="deshabilitarBtn">Deshabilitar</button>
+
+    <!-- Botón para habilitar el campo de texto -->
+    <button id="habilitarBtn">Habilitar</button>
+
+    <script>
+        // Seleccionar el campo de texto y los botones
+        const campoTexto = document.getElementById('campoTexto2');
+        const deshabilitarBtn = document.getElementById('deshabilitarBtn');
+        const habilitarBtn = document.getElementById('habilitarBtn');
+
+        // Función para deshabilitar el campo de texto
+        deshabilitarBtn.addEventListener('click', function() {
+            campoTexto.disabled = true; // Deshabilitar el campo de texto
+        });
+
+        // Función para habilitar el campo de texto
+        habilitarBtn.addEventListener('click', function() {
+            campoTexto.disabled = false; // Habilitar el campo de texto
+        });
+    </script>
+    <!-- Formulario para ingresar el correo -->
+    <form id="correoForm">
+      <label for="correo">Ingresa tu correo electrónico:</label>
+      <input type="email" id="correo" name="correo" required>
+      <button type="submit">Guardar correo</button>
+  </form>
+
+  <!-- Espacio donde se mostrará el correo guardado -->
+  <div id="correoGuardado"></div>
+
+  <!-- Botón para eliminar el correo guardado -->
+  <button id="eliminarBtn">Eliminar correo guardado</button>
+
+  <script>
+      // Elementos del DOM
+      const correoForm = document.getElementById('correoForm');
+      const correoInput = document.getElementById('correo');
+      const correoGuardadoDiv = document.getElementById('correoGuardado');
+      const eliminarBtn = document.getElementById('eliminarBtn');
+
+      // Función para cargar el correo almacenado en localStorage si existe
+      function cargarCorreo() {
+          const correoGuardado = localStorage.getItem('correo');
+          if (correoGuardado) {
+              mostrarCorreo(correoGuardado);
+          }
+      }
+
+      // Función para mostrar el correo guardado en el DOM
+      function mostrarCorreo(correo) {
+          correoGuardadoDiv.textContent = `Correo guardado: ${correo}`;
+          eliminarBtn.style.display = 'block'; // Mostramos el botón de eliminar
+      }
+
+      // Evento para guardar el correo en localStorage cuando se envíe el formulario
+      correoForm.addEventListener('submit', function(event) {
+          event.preventDefault(); // Evitamos que el formulario se envíe de forma predeterminada
+          const correo = correoInput.value;
+          localStorage.setItem('correo', correo); // Guardamos el correo en localStorage
+          mostrarCorreo(correo); // Mostramos el correo guardado en el DOM
+          correoInput.value = ''; // Limpiamos el campo de texto
+      });
+
+      // Evento para eliminar el correo guardado en localStorage
+      eliminarBtn.addEventListener('click', function() {
+          localStorage.removeItem('correo'); // Eliminamos el correo de localStorage
+          correoGuardadoDiv.textContent = ''; // Limpiamos el contenido mostrado
+          eliminarBtn.style.display = 'none'; // Ocultamos el botón de eliminar
+      });
+
+      // Cargamos el correo almacenado en localStorage al cargar la página
+      window.onload = cargarCorreo;
+  </script>
+
+  </body>
+</html>
